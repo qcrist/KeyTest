@@ -1,7 +1,11 @@
 function readFile(file,time)
 {
     if (time == undefined) time = 60000;
-    var response = $.ajax(file,{async:false,cache:false,timeout:time}).responseText;
+    var response = $.ajax(file,{
+        async:false,
+        cache:false,
+        timeout:time
+    }).responseText;
     if (!response)
         throw("Error loading: "+file);
     return response;
@@ -69,7 +73,7 @@ function createProgramFromShaders(gl,vertexShaderSource,fragmentShaderSource)
 }
 function createProgramFromShaderFiles(gl,vertexShaderFile,fragmentShaderFile)
 {
-    return createProgram(loadShader(readFile(vertexShaderFile),gl.VERTEX_SHADER),loadShader(readFile(fragmentShaderFile),gl.FRAGMENT_SHADER));
+    return createProgramFromShaders(gl,readFile(vertexShaderFile),readFile(fragmentShaderFile));
 }
 function perspective(canvas,projectionMatrix,near,far)
 {
@@ -77,4 +81,24 @@ function perspective(canvas,projectionMatrix,near,far)
     if (far == undefined) far = 10;
     var ratio = canvas.clientWidth / canvas.clientHeight;
     mat4.frustum(-ratio, ratio, -1, 1, near, far, projectionMatrix);
+}
+mat4.multiplyV3 = function(mat,vec)
+{
+    var result = vec3.create();
+    result[0] = mat[0]*vec[0] + mat[1]*vec[1] + mat[2]*vec[2];
+    result[1] = mat[4]*vec[0] + mat[5]*vec[1] + mat[6]*vec[2];
+    result[2] = mat[8]*vec[0] + mat[9]*vec[1] + mat[10]*vec[2];
+    return result;
+}
+function requestFullscreen(element)
+{
+    element.requestFullScreen =
+    element.requestFullScreen    ||
+    element.mozRequestFullScreen ||
+    element.webkitRequestFullScreen;
+    element.requestFullScreen(element.ALLOW_KEYBOARD_INPUT);
+    element.requestPointerLock = element.requestPointerLock    ||
+    element.mozRequestPointerLock ||
+    element.webkitRequestPointerLock;
+    element.requestPointerLock();
 }
