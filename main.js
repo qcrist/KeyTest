@@ -109,6 +109,52 @@ var colorz = new Float32Array([
     ]);
 var colorBuf;
 
+var texz = new Float32Array([
+    1,0,
+    1,1,
+    0,1,
+    1,0,
+    0,1,
+    0,0,
+
+    0,0,
+    1,1,
+    0,1,
+    0,0,
+    1,0,
+    1,1,
+
+    1,0,
+    1,1,
+    0,0,
+    0,0,
+    1,1,
+    0,1,
+
+    1,1,
+    0,1,
+    1,0,
+
+    0,1,
+    0,0,
+    1,0,
+
+    1,1,
+    0,0,
+    1,0,
+    1,1,
+    0,1,
+    0,0,
+
+    0,1,
+    0,0,
+    1,0,
+    0,1,
+    1,0,
+    1,1,
+    ]);
+var texBuf;
+
 function init()
 {
     canvas = document.getElementById("canvas");
@@ -128,6 +174,7 @@ function init()
     program.tex = gl.getAttribLocation(program, "tex");
 
     gl.enableVertexAttribArray(program.pos);
+    gl.enableVertexAttribArray(program.tex);
     gl.enableVertexAttribArray(program.color);
 
     posBuf = gl.createBuffer();
@@ -138,7 +185,26 @@ function init()
     gl.bindBuffer(gl.ARRAY_BUFFER, colorBuf);
     gl.bufferData(gl.ARRAY_BUFFER, colorz, gl.STATIC_DRAW);
 
+    texBuf = gl.createBuffer();
+    gl.bindBuffer(gl.ARRAY_BUFFER, texBuf);
+    gl.bufferData(gl.ARRAY_BUFFER, texz, gl.STATIC_DRAW);
+
     pos = [0,0,-5]
+
+    var texture = gl.createTexture();
+    texture.image = new Image();
+    texture.image.onload = function(){
+        gl.activeTexture(gl.TEXTURE0);
+        gl.bindTexture(gl.TEXTURE_2D, texture);
+        gl.pixelStorei(gl.UNPACK_FLIP_Y_WEBGL, true);
+        gl.texImage2D(gl.TEXTURE_2D, 0, gl.RGBA, gl.RGBA, gl.UNSIGNED_BYTE, texture.image);
+        gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_MAG_FILTER, gl.NEAREST);
+        gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_MIN_FILTER, gl.NEAREST);
+        SAMPLER = gl.getUniformLocation(program, "sampler");
+        gl.uniform1i(SAMPLER, 0);
+    }
+    texture.image.src = "pic.png";
+
 
     resize();
     window.requestAnimFrame(draw, canvas);
@@ -186,6 +252,9 @@ function draw(time)
     // Pass in the information
     gl.bindBuffer(gl.ARRAY_BUFFER, posBuf);
     gl.vertexAttribPointer(program.pos, 3, gl.FLOAT, false, 0, 0);
+
+    gl.bindBuffer(gl.ARRAY_BUFFER, texBuf);
+    gl.vertexAttribPointer(program.tex, 2, gl.FLOAT, false, 0, 0);
 
     //DRAW
     gl.clear(gl.COLOR_BUFFER_BIT|gl.DEPTH_BUFFER_BIT);
@@ -237,6 +306,8 @@ function isKeyDown(key)
 
 function mousemove(event)
 {
+    if (document.webkitCurrentFullScreenElement == null)
+        return;
     var dx = event.movementX ||
     event.mozMovementX          ||
     event.webkitMovementX       ||
