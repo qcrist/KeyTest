@@ -1,0 +1,14 @@
+precision mediump float;       // Set the default precision to medium. We don't need as high of a precision in the fragment shader.				
+varying vec4 vcolor;          // This is the color from the vertex shader interpolated across the triangle per fragment.			  
+varying vec2 vtex;
+uniform sampler2D sampler;
+void main()                    // The entry point for our fragment shader.
+{
+//            gl_FragColor = texture2D(sampler, vec2(0, 0));
+gl_FragColor = texture2D(sampler, vec2(vtex.s, vtex.t)) * vcolor;
+//            vec4 tex = texture2D(sampler, vec2(vtex.s, vtex.t));
+//            gl_FragColor = vec4(tex.a,tex.a,tex.a,1);
+//            gl_FragColor = tex*tex.a+vcolor*(1.0-tex.a);
+//            gl_FragColor = texture2D(uSampler, vec2(vTextureCoord.s, vTextureCoord.t))
+//            gl_FragColor = vcolor;    // Pass the color directly through the pipeline.		  
+}	

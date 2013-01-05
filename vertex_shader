@@ -1,0 +1,18 @@
+uniform mat4 mvMatrix;   // A constant representing the combined model/view/projection matrix.
+uniform mat4 pMatrix;   // A constant representing the combined model/view/projection matrix.
+attribute vec3 pos;  // Per-vertex position information we will pass in.
+attribute vec4 color;     // Per-vertex color information we will pass in.			  
+attribute vec2 tex; //texture coordinate
+varying vec4 vcolor;       // This will be passed into the fragment shader.
+varying vec2 vtex;
+void main()                 // The entry point for our vertex shader.
+{                             
+vcolor = color;
+vtex = tex;
+// Pass the color through to the fragment shader. 
+// It will be interpolated across the triangle.
+gl_Position = pMatrix * mvMatrix * vec4(pos, 1.0);
+//            gl_Position = matrix * pos;
+// gl_Position is a special variable used to store the final position.        			                                            			 
+// Multiply the vertex by the matrix to get the final point in normalized screen coordinates.
+}

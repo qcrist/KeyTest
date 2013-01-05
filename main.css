@@ -1,0 +1,42 @@
+*{
+    margin:0;
+    padding:0;
+}
+html,body{
+    width:  100%;
+    height: 100%;
+    background-color: white;
+}
+canvas
+{
+    width:  100%;
+    height: 100%;
+    background-color: black;
+    display:block;
+    position: absolute;
+    left: 0;
+    top: 0;
+    z-index:0;
+}
+.shadow{
+    text-shadow: 0em 0em .3em black,0em 0em .3em black,0em 0em .3em black,0em 0em .3em black;
+}
+#FPS{
+    position: absolute;
+    left: 5px;
+    top: 5px;
+    z-index: 1;
+    color: white;
+    font-size: 40px;
+    font-family: monospace;
+}
+#CREDIT{
+    position: absolute;
+    right: 5px;
+    bottom: 5px;
+    z-index: 1;
+    color: white;
+    font-size: 20px;
+    text-align: left;
+    font-family: monospace;
+}
