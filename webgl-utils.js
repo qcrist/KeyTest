@@ -101,15 +101,15 @@ var OTHER_PROBLEM = '' +
  *     creation attributes you want to pass in.
  * @return {WebGLRenderingContext} The created context.
  */
-var setupWebGL = function(canvas, opt_attribs) {
+var setupWebGL = function(canvas, opt_attribs, display) {
   function showLink(str) {
     var container = canvas.parentNode;
     if (container) {
       container.innerHTML = makeFailHTML(str);
     }
   };
-
-  if (!window.WebGLRenderingContext) {
+ 
+  if (!window.WebGLRenderingContext && display==true) {
     showLink(GET_A_WEBGL_BROWSER);
     return null;
   }

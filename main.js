@@ -12,9 +12,7 @@ var rot = mat4.create();
 function init()
 {
     canvas = document.getElementById("canvas");
-    if ((gl = WebGLUtils.setupWebGL(canvas,{
-        depth: true
-    })) == null) return;
+    if ((gl=WebGLUtils.setupWebGL(canvas,{depth: true}))==null) return;
     gl.clearColor(0,0,0, 1);	
     //gl.clearColor(0.1, 0.1, 0.15, 1);	
     gl.useProgram(program = createProgramFromShaderFiles(gl,"vertex_shader","fragment_shader"));
